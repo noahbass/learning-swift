@@ -64,7 +64,7 @@ class ViewController: UIViewController {
         if operation == nil {
             if leftValue == nil {
                 leftValue = "0."
-            } else {
+            } else if !self.stringIncludesDecimal(input: leftValue!) {
                 leftValue?.append(".")
             }
             
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
         } else {
             if rightValue == nil {
                 rightValue = "0."
-            } else {
+            } else if !self.stringIncludesDecimal(input: rightValue!) {
                 rightValue?.append(".")
             }
             
@@ -108,5 +108,14 @@ class ViewController: UIViewController {
         formatter.maximumFractionDigits = 6
 
         return formatter.string(from: valueNSNumber)!
+    }
+    
+    // Simple utility to determine if a decminal point exists in the given string
+    func stringIncludesDecimal(input: String) -> Bool {
+        if input.range(of: ".") != nil {
+            return true
+        }
+
+        return false
     }
 }
