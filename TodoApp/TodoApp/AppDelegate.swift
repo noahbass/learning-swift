@@ -13,7 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // a window for all view controllers
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // create a new instance of ListViewController and use it as rootViewController
+        let homeViewController = ListViewController()
+        window?.rootViewController = homeViewController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
