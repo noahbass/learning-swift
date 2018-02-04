@@ -16,6 +16,17 @@ class TodoLogic {
     }
     
     /**
+     Gets a single task
+     */
+    func getTask(at index: Int) -> Task? {
+        if index + 1 > self.tasks.count {
+            return nil
+        }
+        
+        return self.tasks[index]
+    }
+    
+    /**
      Adds a new task
      */
     func addTask(title: String, importance: Int = 1) -> Void {
@@ -38,7 +49,7 @@ class TodoLogic {
      Sorts the tasks by createdAt date (oldest first), then by title (descending),
      and then by importance (highest first)
      */
-    func sort() -> Void {
+    private func sort() -> Void {
         // TODO: find a better way to do this if there is one
         self.tasks.sort(by: { (left: Task, right: Task) -> Bool in
             if (left.createdAt == right.createdAt) {

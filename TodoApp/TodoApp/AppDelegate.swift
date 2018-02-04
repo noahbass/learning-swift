@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         // create a new instance of ListViewController and use it as rootViewController
-        let homeViewController = ListViewController()
+        let homeViewController = TaskListViewController()
         window?.rootViewController = homeViewController
         window?.makeKeyAndVisible()
         
