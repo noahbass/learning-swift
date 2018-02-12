@@ -8,15 +8,41 @@
 
 import UIKit
 
-class TaskListViewController: UITableViewController {
+class TaskListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var todo: TodoLogic = TodoLogic() // used as a data model for UITableView
+    
+    var headerView: UIView = UIView()
+    var tableView: UITableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         
-        title = "Todo List"
+        let headerHeight: CGFloat = 64
+        let safeAreaTop = view.safeAreaInsets.top
+        
+        tableView = UITableView(frame: CGRect(x: 0, y: safeAreaTop + headerHeight, width: view.frame.width, height: view.frame.height - headerHeight))
+        
+        // setup the header
+        headerView = UIView(frame: CGRect(x: 0, y: safeAreaTop, width: view.frame.width, height: headerHeight))
+        headerView.backgroundColor = UIColor.purple
+        
+        // Add an input text field to the header
+        let textInputWidth: CGFloat = view.frame.width * 0.75
+        let textInput: UITextField = UITextField(frame: CGRect(x: 12, y: 12 + safeAreaTop, width: textInputWidth, height: 40))
+        textInput.placeholder = "New task"
+        headerView.addSubview(textInput)
+        
+        // Add a button to the header
+        let buttonWidth: CGFloat = view.frame.width * 0.25
+        let buttonInput: UIButton = UIButton(frame: CGRect(x: textInputWidth, y: 12 + safeAreaTop, width: buttonWidth, height: 40))
+        buttonInput.setTitle("Add", for: .normal)
+        headerView.addSubview(buttonInput)
+        
+        // add both header and table to
+        view.addSubview(headerView)
+        view.addSubview(tableView)
         
         // add a new task button
         let newTaskButton: UIButton = UIButton(type: .system)
@@ -30,21 +56,25 @@ class TaskListViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    // from UITableViewDataSource
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todo.getTasks().count
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // from UITableViewDataSource
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return todo.getTasks().count
+    }
+
+    // from UITableViewDataSource
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row: Int = indexPath.row
         let cell: UITableViewCell = UITableViewCell()
         cell.textLabel?.text = todo.getTasks()[row].title
         return cell
     }
-    
+
     // from UITableViewDataSource
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             self.removeRow(at: indexPath)
         }
